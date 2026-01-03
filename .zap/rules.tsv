@@ -7,3 +7,6 @@
 10063	IGNORE	Permissions Policy Header Not Set
 90003	IGNORE	Sub Resource Integrity Attribute Missing
 90004	IGNORE	Insufficient Site Isolation Against Spectre Vulnerability
+10027	IGNORE	Information Disclosure - Suspicious Comments
+10049	IGNORE	Non-Storable Content
+10112	IGNORE	Session Management Response Identified
