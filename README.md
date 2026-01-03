@@ -1,5 +1,5 @@
 # TBO Projekt
-## Zespół
+## Zespół 1
 - Zuzanna Damszel
 - Iga Mirończuk
 - Jakub Szostak
