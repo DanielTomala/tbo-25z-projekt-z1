@@ -30,4 +30,21 @@ Aplikacja zawiera 19 testów weryfikujących ochronę XSS, walidację danych, lo
 
 ## CI/CD
 
+
+Proces CI/CD jest zrealizowany w GitHub Actions (`.github/workflows/ci-cd.yml`).
+
+- **Triggery:** uruchamiany na `push` do dowolnej gałęzi oraz na `pull_request` do `main`.
+- **Tagowanie obrazów:**
+  - `main` → budowa/publikacja obrazu z tagiem `:latest`
+  - pozostałe gałęzie → budowa/publikacja obrazu z tagiem `:beta`
+- **Gating przed budową obrazu:** przed `docker build` uruchamiane są:
+  - testy jednostkowe (pytest),
+  - SAST (Bandit),
+  - SCA (OWASP Dependency-Check),
+  - DAST (OWASP ZAP baseline).
+  Jeśli którykolwiek krok nie przejdzie, pipeline kończy się błędem i obraz nie jest budowany/publikowany.
+- **Publikacja obrazu:** obrazy są publikowane do GHCR; dla eventu `pull_request` publikacja jest pomijana.
+- **DAST konfiguracja:** ZAP używa pliku `.zap/rules.tsv` do ignorowania wybranych ostrzeżeń baseline, aby utrzymać stabilne wyniki.
+- **Ustawienia repozytorium:** gałąź `main` jest chroniona (wymagany PR + status checks), zgodnie z wymaganiami ograniczenia bezpośrednich zmian na gałęzi głównej.
+
 ## Podatności
