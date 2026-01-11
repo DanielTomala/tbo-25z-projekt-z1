@@ -48,3 +48,22 @@ Proces CI/CD jest zrealizowany w GitHub Actions (`.github/workflows/ci-cd.yml`).
 - **Ustawienia repozytorium:** gałąź `main` jest chroniona (wymagany PR + status checks), zgodnie z wymaganiami ograniczenia bezpośrednich zmian na gałęzi głównej.
 
 ## Podatności
+
+Zadanie 2 zostało zrealizowne na gałęzi 'cicd-verification'.
+Wprowadzono 2 celowe podatności, które mogą zostać wykorzystane, dlatego proces CI/CD kończy się niepowodzeniem.
+
+Podatność 1 - Code Injection / Remote Code Execution
+  - Endpoint przyjmuje wyrażenie z parametru `expr` i wykonuje je funkcją `eval()`, co umożliwia wykonanie kodu po stronie serwera. 
+  - Lokalizacja: tbo-25z-projekt-z1/Flask_Book_Library/app.py
+  - Endpoint: GET /debug/unsafe-eval
+  - Wykrycie: SAST (Bandit) - reguła B307
+
+Podatność 2 - Command Injection 
+  - Endpoint przyjmuje komendę z parametru cmd i wykonuje ją przez `subprocess.check_output(cmd, shell=True, text=True)`, co umożliwia wstrzyknięcie i wykonanie komend systemowych. 
+  - Endpoint: GET /debug/unsafe-cmd
+  - Wykrycie: SAST (Bandit) - reguły B602/B605 (subprocess z shell=True)
+  
+Dowód (CI/CD):
+  - Link do runa workflow (Zadanie 2):
+  https://github.com/DanielTomala/tbo-25z-projekt-z1/actions/runs/20700249578/job/59421417273
+
