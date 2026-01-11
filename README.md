@@ -27,6 +27,7 @@ docker run --rm -e PYTHONPATH=. projekt-tbo python -m pytest tests/
 ```
 
 Aplikacja zawiera 19 testów weryfikujących ochronę XSS, walidację danych, logikę API i sanityzację.
+https://github.com/DanielTomala/tbo-25z-projekt-z1/blob/main/Flask_Book_Library/tests/test_validation.py
 
 ## CI/CD
 
