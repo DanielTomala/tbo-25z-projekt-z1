@@ -37,7 +37,7 @@ Proces CI/CD jest zrealizowany w GitHub Actions (`.github/workflows/ci-cd.yml`).
 - **Triggery:** uruchamiany na `push` do dowolnej gałęzi oraz na `pull_request` do `main`.
 - **Tagowanie obrazów:**
   - `main` → budowa/publikacja obrazu z tagiem `:latest`
-  - pozostałe gałęzie → budowa/publikacja obrazu z tagiem `:beta`
+  - pozostałe gałęzie → budowa/publikacja obrazu z tagiem `:<branch>-beta`
 - **Gating przed budową obrazu:** przed `docker build` uruchamiane są:
   - testy jednostkowe (pytest),
   - SAST (Bandit),
