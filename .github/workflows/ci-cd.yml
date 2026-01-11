@@ -23,12 +23,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set image tag (latest on main, beta otherwise)
+      - name: Set image tag (latest on main, branch-beta otherwise)
         run: |
           if [ "${GITHUB_REF_NAME}" = "main" ]; then
             echo "IMAGE_TAG=latest" >> $GITHUB_ENV
           else
-            echo "IMAGE_TAG=beta" >> $GITHUB_ENV
+            BRANCH_TAG="$(echo "${GITHUB_REF_NAME}" \
+              | tr '[:upper:]' '[:lower:]' \
+              | sed -E 's#[^a-z0-9._-]+#-#g')"
+            echo "IMAGE_TAG=${BRANCH_TAG}-beta" >> $GITHUB_ENV
           fi
 
       - name: Set up Python
