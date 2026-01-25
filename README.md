@@ -16,7 +16,7 @@ Funkcjonalności:
 
 ##### Instrukcja uruchomienia
 ```
-cd Python/Flask_Book_Library/
+cd Flask_Book_Library/
 docker build -t projekt-tbo .
 
 # Uruchomienie aplikacji
@@ -50,6 +50,15 @@ Proces CI/CD jest zrealizowany w GitHub Actions (`.github/workflows/ci-cd.yml`).
 - **DAST konfiguracja:** ZAP używa pliku `.zap/rules.tsv` do ignorowania wybranych ostrzeżeń baseline, aby utrzymać stabilne wyniki.
 - **Ustawienia repozytorium:** gałąź `main` jest chroniona (wymagany PR + status checks), zgodnie z wymaganiami ograniczenia bezpośrednich zmian na gałęzi głównej.
 
+## Obrazy Docker
+
+Obrazy są publikowane do GHCR:
+https://github.com/DanielTomala/tbo-25z-projekt-z1/pkgs/container/tbo-25z-projekt-z1
+
+Przykładowe pobranie obrazu:
+```
+docker pull ghcr.io/danieltomala/tbo-25z-projekt-z1:latest
+```
 ## Podatności
 
 Zadanie 2 zostało zrealizowne na gałęzi 'cicd-verification'.
@@ -65,8 +74,21 @@ Podatność 2 - Command Injection
   - Endpoint przyjmuje komendę z parametru cmd i wykonuje ją przez `subprocess.check_output(cmd, shell=True, text=True)`, co umożliwia wstrzyknięcie i wykonanie komend systemowych. 
   - Endpoint: GET /debug/unsafe-cmd
   - Wykrycie: SAST (Bandit) - reguły B602/B605 (subprocess z shell=True)
+
+### Dowody
+
+Dowód lokalny (URL-e testowe):
+  - RCE (eval): http://localhost:5000/debug/unsafe-eval?expr=__import__%28%27os%27%29.popen%28%27id%27%29.read%28%29
+  - Command Injection: http://localhost:5000/debug/unsafe-cmd?cmd=id
+
+Jeśli port 5000 jest zajęty, uruchom kontener na innym porcie (np. `-p 5001:5000`) i podmień `localhost:5000` na `localhost:5001`.
+
+Przykładowa odpowiedź:
+```
+uid=0(root) gid=0(root) groups=0(root)
+```
+![Dowod lokalny](proof_local.png)
   
 Dowód (CI/CD):
   - Link do runa workflow (Zadanie 2):
   https://github.com/DanielTomala/tbo-25z-projekt-z1/actions/runs/20700249578/job/59421417273
-
